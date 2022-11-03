@@ -15,6 +15,6 @@ public interface PostService {
     void deletePost(int id);
     Post updatePost(Post post);
     PostDTO convertPostToPostDTO(Post post);
-
+    List<Post> findSuggestions(User user);
 
 }

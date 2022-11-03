@@ -22,9 +22,6 @@ public class Picture {
     @JoinColumn(name = "post_id", referencedColumnName = "id")
     private Post post;
 
-    @OneToMany(mappedBy = "picture")
-    private List<LikePicture> likePictures;
-
     public Picture() {
     }
 
@@ -64,13 +61,5 @@ public class Picture {
 
     public void setPost(Post post) {
         this.post = post;
-    }
-
-    public List<LikePicture> getLikePictures() {
-        return likePictures;
-    }
-
-    public void setLikePictures(List<LikePicture> likePictures) {
-        this.likePictures = likePictures;
     }
 }

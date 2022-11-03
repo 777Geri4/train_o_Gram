@@ -32,17 +32,14 @@ public class User{
     @OneToMany(mappedBy = "owner")
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "friend")
-    private List<Relationship> friends;
+    @OneToMany(mappedBy = "publisher")
+    private List<Relationship> publishers;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "subscriber")
     private List<Relationship> subscribers;
 
     @OneToMany(mappedBy = "owner")
     private List<LikeComment> likeComments;
-
-    @OneToMany(mappedBy = "owner")
-    private List<LikePicture> likePictures;
 
     @OneToMany(mappedBy = "owner")
     private List<LikePost> likePosts;
@@ -114,12 +111,12 @@ public class User{
         this.comments = comments;
     }
 
-    public List<Relationship> getFriends() {
-        return friends;
+    public List<Relationship> getPublishers() {
+        return publishers;
     }
 
-    public void setFriends(List<Relationship> friends) {
-        this.friends = friends;
+    public void setPublishers(List<Relationship> publishers) {
+        this.publishers = publishers;
     }
 
     public List<Relationship> getSubscribers() {
@@ -136,14 +133,6 @@ public class User{
 
     public void setLikeComments(List<LikeComment> likeComments) {
         this.likeComments = likeComments;
-    }
-
-    public List<LikePicture> getLikePictures() {
-        return likePictures;
-    }
-
-    public void setLikePictures(List<LikePicture> likePictures) {
-        this.likePictures = likePictures;
     }
 
     public List<LikePost> getLikePosts() {

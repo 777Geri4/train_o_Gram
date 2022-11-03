@@ -2,6 +2,8 @@ package com.five.train_o_gram.controllers;
 
 import com.five.train_o_gram.dto.PostDTO;
 import com.five.train_o_gram.dto.UserDTO;
+import com.five.train_o_gram.services.PostService;
+import com.five.train_o_gram.services.UserService;
 import com.five.train_o_gram.services.impl.LikePostServiceImpl;
 import com.five.train_o_gram.services.impl.PostServiceImpl;
 import com.five.train_o_gram.services.impl.UserServiceImpl;
@@ -22,38 +24,38 @@ import java.util.List;
 public class PostController {
     public static final String POST_NOT_CREATED = "Пост не створено";
     public static final String POST_NOT_FOUND = "Пост не знайдено";
-    private final PostServiceImpl postServiceImpl;
-    private final UserServiceImpl userService;
+    private final PostService postService;
+    private final UserService userService;
     private final LikePostServiceImpl likePostServiceImpl;
 
     @Autowired
-    public PostController(PostServiceImpl postServiceImpl, UserServiceImpl userService, LikePostServiceImpl likePostServiceImpl) {
-        this.postServiceImpl = postServiceImpl;
+    public PostController(PostService postService, UserServiceImpl userService, LikePostServiceImpl likePostServiceImpl) {
+        this.postService = postService;
         this.userService = userService;
         this.likePostServiceImpl = likePostServiceImpl;
     }
 
     @GetMapping()
     public ResponseEntity<List<PostDTO>> getPosts() {
-        return ResponseEntity.ok(postServiceImpl.findAllUserPost(userService.getCurrentUser()).stream()
-                .map(postServiceImpl::convertPostToPostDTO).toList());
+        return ResponseEntity.ok(postService.findAllUserPost(userService.getCurrentUser()).stream()
+                .map(postService::convertPostToPostDTO).toList());
     }
 
     @GetMapping("/recommendations")
     public ResponseEntity<List<PostDTO>> getRecommendedPosts() {
-        return ResponseEntity.ok(postServiceImpl.findSuggestions(userService.getCurrentUser()).stream()
-                .map(postServiceImpl::convertPostToPostDTO).toList());
+        return ResponseEntity.ok(postService.findSuggestions(userService.getCurrentUser()).stream()
+                .map(postService::convertPostToPostDTO).toList());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PostDTO> getPost(@PathVariable("id") int id) {
-        return ResponseEntity.ok(postServiceImpl.convertPostToPostDTO(postServiceImpl.findPostByID(id)));
+        return ResponseEntity.ok(postService.convertPostToPostDTO(postService.findPostByID(id)));
     }
 
     @PostMapping("/create")
     public ResponseEntity<HttpStatus> createPost(@RequestBody MultipartFile image, String message){
         try {
-            postServiceImpl.createPost(userService.getCurrentUser(), image, message);
+            postService.createPost(userService.getCurrentUser(), image, message);
         } catch (IOException e) {
             throw new PostNotCreatedException();
         }
@@ -62,7 +64,7 @@ public class PostController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deletePost(@PathVariable("id") int id){
-        postServiceImpl.deletePost(id);
+        postService.deletePost(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 

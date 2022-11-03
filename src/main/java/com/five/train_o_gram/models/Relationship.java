@@ -1,11 +1,11 @@
 package com.five.train_o_gram.models;
 
-import com.five.train_o_gram.util.RelationStatus;
+import com.five.train_o_gram.util.SubscribeStatus;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user_has_friends")
+@Table(name = "user_has_subscribers")
 public class Relationship {
     @Id
     @Column(name = "id")
@@ -13,21 +13,21 @@ public class Relationship {
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    @JoinColumn(name = "subscriber_id", referencedColumnName = "id")
+    private User subscriber;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "friend_id", referencedColumnName = "id")
-    private User friend;
+    @JoinColumn(name = "publisher_id", referencedColumnName = "id")
+    private User publisher;
 
-    @Column(name = "friend_status")
+    @Column(name = "status_of_subscribe")
     @Enumerated()
-    private RelationStatus relationStatus;
+    private SubscribeStatus subscribeStatus;
 
-    public Relationship(User user, User friend, RelationStatus relationStatus) {
-        this.user = user;
-        this.friend = friend;
-        this.relationStatus = relationStatus;
+    public Relationship(User subscriber, User publisher, SubscribeStatus subscribeStatus) {
+        this.subscriber = subscriber;
+        this.publisher = publisher;
+        this.subscribeStatus = subscribeStatus;
     }
 
     public Relationship() {}
@@ -40,27 +40,27 @@ public class Relationship {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public User getSubscriber() {
+        return subscriber;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setSubscriber(User subscriber) {
+        this.subscriber = subscriber;
     }
 
-    public User getFriend() {
-        return friend;
+    public User getPublisher() {
+        return publisher;
     }
 
-    public void setFriend(User friend) {
-        this.friend = friend;
+    public void setPublisher(User publisher) {
+        this.publisher = publisher;
     }
 
-    public RelationStatus getFriendStatus() {
-        return relationStatus;
+    public SubscribeStatus getSubscribeStatus() {
+        return subscribeStatus;
     }
 
-    public void setFriendStatus(RelationStatus relationStatus) {
-        this.relationStatus = relationStatus;
+    public void setSubscribeStatus(SubscribeStatus subscribeStatus) {
+        this.subscribeStatus = subscribeStatus;
     }
 }

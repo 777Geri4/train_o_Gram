@@ -5,6 +5,8 @@ import com.five.train_o_gram.models.Comment;
 import com.five.train_o_gram.models.Post;
 import com.five.train_o_gram.repositories.CommentRepository;
 import com.five.train_o_gram.services.CommentService;
+import com.five.train_o_gram.services.NotificationFactoryService;
+import com.five.train_o_gram.util.NotificationType;
 import com.five.train_o_gram.util.exceptions.comment.CommentNotFoundExeption;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,19 +21,25 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final UserServiceImpl userService;
+    private final NotificationFactoryService notificationFactoryService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository, UserServiceImpl userService, ModelMapper modelMapper) {
+    public CommentServiceImpl(CommentRepository commentRepository, UserServiceImpl userService,
+                              NotificationFactoryService notificationFactoryService, ModelMapper modelMapper) {
         this.commentRepository = commentRepository;
         this.userService = userService;
+        this.notificationFactoryService = notificationFactoryService;
         this.modelMapper = modelMapper;
     }
     @Override
     @Transactional
     public void create(Post post, String comment){
-        commentRepository.save(new Comment(comment, new Date(),
-                post, userService.getCurrentUser()));
+        Comment newComment = new Comment(comment, new Date(), post, userService.getCurrentUser());
+        commentRepository.save(newComment);
+        notificationFactoryService
+                .getCommentNotificationService()
+                .createNotification(post.getOwner(), newComment.getOwner(), NotificationType.CREATE_COMMENT, newComment);
     }
     @Override
     public List<Comment> findByPost(Post post){

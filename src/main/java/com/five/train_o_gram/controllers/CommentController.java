@@ -24,22 +24,22 @@ public class CommentController {
     public static final String POST_NOT_FOUND = "Пост не знайдено";
     public static final String COMMENT_NOT_FOUND = "Комментарій не знайдено";
     private final CommentService commentService;
-    private final PostService postServiceImpl;
+    private final PostService postService;
     private final LikeCommentServiceImpl likeCommentServiceImpl;
     private final UserServiceImpl userService;
 
     @Autowired
-    public CommentController(CommentServiceImpl commentService, PostServiceImpl postServiceImpl,
+    public CommentController(CommentServiceImpl commentService, PostService postService,
                              LikeCommentServiceImpl likeCommentServiceImpl, UserServiceImpl userService) {
         this.commentService = commentService;
-        this.postServiceImpl = postServiceImpl;
+        this.postService = postService;
         this.likeCommentServiceImpl = likeCommentServiceImpl;
         this.userService = userService;
     }
 
     @GetMapping("/post/{id}")
     public ResponseEntity<List<CommentDTO>> findPostComments(@PathVariable("id") int id){
-        return ResponseEntity.ok(commentService.findByPost(postServiceImpl.findPostByID(id)).stream()
+        return ResponseEntity.ok(commentService.findByPost(postService.findPostByID(id)).stream()
                 .map(commentService::convertCommentToCommentDTO).toList());
     }
 
@@ -50,7 +50,7 @@ public class CommentController {
 
     @PostMapping("post/{id}")
     public ResponseEntity<HttpStatus> createComment(@PathVariable("id") int id, String comment){
-        commentService.create(postServiceImpl.findPostByID(id), comment);
+        commentService.create(postService.findPostByID(id), comment);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
