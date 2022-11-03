@@ -31,8 +31,10 @@ public class RelationshipsServiceImpl implements RelationshipsService {
     @Transactional
     public void addToFriends(int friendID){
         User user = userService.getCurrentUser();
+        if (user.getId() == friendID) return;
         User friend = userService.findOne(friendID);
-        Relationship relationship = relationshipsRepository.findByUserIdAndFriendId(user.getId(), friend.getId());
+
+        Relationship relationship = relationshipsRepository.findByUserAndFriend(user, friend);
         if (relationship == null) {
             relationshipsRepository.save(new Relationship(user, friend, RelationStatus.FRIEND));
             relationshipsRepository.save(new Relationship(friend, user, RelationStatus.SUBSCRIBER));
@@ -40,20 +42,20 @@ public class RelationshipsServiceImpl implements RelationshipsService {
             relationship.setFriendStatus(RelationStatus.FRIEND);
             relationshipsRepository.save(relationship);
         }
-        eventService.createEventFriendshipActivity(user, friend);
+        eventService.createEventFriendshipActivity(friend, user);
     }
     @Override
     @Transactional
     public void addToSubscribers(int subscriberID){
         User user = userService.getCurrentUser();
         User subscriber = userService.findOne(subscriberID);
-        Relationship relationship = relationshipsRepository.findByUserIdAndFriendId(user.getId(), subscriber.getId());
+        Relationship relationship = relationshipsRepository.findByUserAndFriend(user, subscriber);
         relationship.setFriendStatus(RelationStatus.SUBSCRIBER);
         relationshipsRepository.save(relationship);
     }
     @Override
     public List<Relationship> getRelationshipByStatus(RelationStatus relationStatus){
-        return relationshipsRepository.findUserFriendsByUserIdAndRelationStatus(userService.getCurrentUser().getId(),
+        return relationshipsRepository.findUserFriendsByUserAndRelationStatus(userService.getCurrentUser(),
                 relationStatus);
     }
 }

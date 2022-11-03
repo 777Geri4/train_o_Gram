@@ -1,5 +1,6 @@
 package com.five.train_o_gram.services;
 
+import com.five.train_o_gram.dto.UserDTO;
 import com.five.train_o_gram.dto.UserRegistrationDTO;
 import com.five.train_o_gram.models.User;
 
@@ -12,5 +13,7 @@ public interface UserService {
     User update(int id, UserRegistrationDTO userDTO);
     void registrationUser(UserRegistrationDTO userDTO);
     void deleteUser(int id);
-    public User getCurrentUser();
+    User getCurrentUser();
+    UserDTO convertUserToUserDTO(User user);
+    User convertUserDTOToUser(UserRegistrationDTO userDTO);
 }

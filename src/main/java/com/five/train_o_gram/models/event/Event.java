@@ -1,13 +1,14 @@
-package com.five.train_o_gram.models;
+package com.five.train_o_gram.models.event;
 
+import com.five.train_o_gram.models.User;
 import com.five.train_o_gram.util.EventStatus;
 import com.five.train_o_gram.util.EventType;
 
 import javax.persistence.*;
+import java.util.Objects;
 
-@Entity
-@Table(name = "event_friendship")
-public class EventFriendship {
+@MappedSuperclass
+public class Event {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,15 +22,13 @@ public class EventFriendship {
     @Column(name = "event_type")
     @Enumerated
     private EventType eventType;
-
     @Column(name = "event_status")
+
     @Enumerated
     private EventStatus eventStatus;
-
-    public EventFriendship() {
+    public Event() {
     }
-
-    public EventFriendship(User owner, User creator, EventType eventType, EventStatus eventStatus) {
+    public Event(User owner, User creator, EventType eventType, EventStatus eventStatus) {
         this.owner = owner;
         this.creator = creator;
         this.eventType = eventType;
@@ -44,19 +43,19 @@ public class EventFriendship {
         this.id = id;
     }
 
-    public User getUser() {
+    public User getOwner() {
         return owner;
     }
 
-    public void setUser(User user) {
+    public void setOwner(User user) {
         this.owner = user;
     }
 
-    public User getFriend() {
+    public User getCreator() {
         return creator;
     }
 
-    public void setFriend(User friend) {
+    public void setCreator(User friend) {
         this.creator = friend;
     }
 
@@ -71,7 +70,6 @@ public class EventFriendship {
     public EventStatus getEventStatus() {
         return eventStatus;
     }
-
     public void setEventStatus(EventStatus eventStatus) {
         this.eventStatus = eventStatus;
     }

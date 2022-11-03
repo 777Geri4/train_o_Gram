@@ -5,6 +5,7 @@ import com.five.train_o_gram.models.LikeComment;
 import com.five.train_o_gram.models.User;
 import com.five.train_o_gram.repositories.LikeCommentRepository;
 import com.five.train_o_gram.services.LikeService;
+import com.five.train_o_gram.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,11 +16,11 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class LikeCommentServiceImpl implements LikeService {
     private final LikeCommentRepository likeCommentRepository;
-    private final UserServiceImpl userService;
+    private final UserService userService;
     private final CommentServiceImpl commentService;
 
     @Autowired
-    public LikeCommentServiceImpl(LikeCommentRepository likeCommentRepository, UserServiceImpl userService,
+    public LikeCommentServiceImpl(LikeCommentRepository likeCommentRepository, UserService userService,
                                   CommentServiceImpl commentService) {
         this.likeCommentRepository = likeCommentRepository;
         this.userService = userService;
