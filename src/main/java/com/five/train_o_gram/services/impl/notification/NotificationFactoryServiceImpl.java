@@ -3,18 +3,22 @@ package com.five.train_o_gram.services.impl.notification;
 import com.five.train_o_gram.services.NotificationFactoryService;
 import com.five.train_o_gram.services.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
 public class NotificationFactoryServiceImpl implements NotificationFactoryService {
-    private final FriendshipNotificationServiceImpl friendshipNotificationService;
-    private final CommentNotificationServiceImpl commentNotificationService;
-    private final PostNotificationServiceImpl postNotificationService;
+    private final NotificationService friendshipNotificationService;
+    private final NotificationService commentNotificationService;
+    private final NotificationService postNotificationService;
 
     @Autowired
-    public NotificationFactoryServiceImpl(FriendshipNotificationServiceImpl friendshipNotificationService,
-                                          CommentNotificationServiceImpl commentNotificationService,
-                                          PostNotificationServiceImpl postNotificationService) {
+    public NotificationFactoryServiceImpl(@Qualifier("friendshipNotificationServiceImpl")
+                                          NotificationService friendshipNotificationService,
+                                          @Qualifier("commentNotificationServiceImpl")
+                                          NotificationService commentNotificationService,
+                                          @Qualifier("postNotificationServiceImpl")
+                                          NotificationService postNotificationService) {
         this.friendshipNotificationService = friendshipNotificationService;
         this.commentNotificationService = commentNotificationService;
         this.postNotificationService = postNotificationService;

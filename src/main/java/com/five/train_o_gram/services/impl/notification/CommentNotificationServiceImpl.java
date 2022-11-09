@@ -11,6 +11,7 @@ import com.five.train_o_gram.util.NotificationType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -40,13 +41,13 @@ public class CommentNotificationServiceImpl implements NotificationService {
     public List<Notification> findNotificationActivity(User recipient, NotificationType notificationType) {
         List<NotificationComment> notificationCommentList = notificationCommentRepository
                 .findAllByRecipientAndNotificationTypeAndNotificationStatus(recipient, notificationType, NotificationStatus.ACTIVE);
-        if (notificationCommentList == null) {
+        if (notificationCommentList.isEmpty()) {
             return Collections.emptyList();
         }
 
         notificationCommentList.forEach(e -> e.setNotificationStatus(NotificationStatus.SEEN));
         notificationCommentRepository.saveAll(notificationCommentList);
 
-        return List.of((Notification) notificationCommentList);
+        return new ArrayList<>(notificationCommentList);
     }
 }

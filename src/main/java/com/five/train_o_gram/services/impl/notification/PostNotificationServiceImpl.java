@@ -4,7 +4,6 @@ import com.five.train_o_gram.models.Post;
 import com.five.train_o_gram.models.Relationship;
 import com.five.train_o_gram.models.User;
 import com.five.train_o_gram.models.notifications.Notification;
-import com.five.train_o_gram.models.notifications.NotificationFriendship;
 import com.five.train_o_gram.models.notifications.NotificationPost;
 import com.five.train_o_gram.repositories.NotificationPostRepository;
 import com.five.train_o_gram.services.NotificationService;
@@ -46,14 +45,14 @@ public class PostNotificationServiceImpl implements NotificationService {
     public List<Notification> findNotificationActivity(User recipient, NotificationType notificationType) {
         List<NotificationPost> notificationPostList = notificationPostRepository
                 .findAllByRecipientAndNotificationTypeAndNotificationStatus(recipient, notificationType, NotificationStatus.ACTIVE);
-        if (notificationPostList == null) {
+        if (notificationPostList.isEmpty()) {
             return Collections.emptyList();
         }
 
         notificationPostList.forEach(e -> e.setNotificationStatus(NotificationStatus.SEEN));
         notificationPostRepository.saveAll(notificationPostList);
 
-        return List.of((Notification) notificationPostList);
+        return new ArrayList<>(notificationPostList);
     }
 
     private void createNotificationPostActivityForUserSubscribers(Post post){

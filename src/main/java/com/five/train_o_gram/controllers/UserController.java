@@ -2,6 +2,7 @@ package com.five.train_o_gram.controllers;
 
 import com.five.train_o_gram.dto.UserDTO;
 import com.five.train_o_gram.dto.UserRegistrationDTO;
+import com.five.train_o_gram.services.UserService;
 import com.five.train_o_gram.services.impl.UserServiceImpl;
 import com.five.train_o_gram.util.exceptions.ErrorResponse;
 import com.five.train_o_gram.util.exceptions.user.UserNotFoundException;
@@ -17,7 +18,7 @@ public class UserController {
     private static final String USER_CANNOT_BE_UPDATED = "Користувача з таким логіном не можливо модифікувати";
     private static final String USER_CANNOT_BE_DELETED = "Користувача з таким логіном не можливо видалити";
     public static final String USER_NOT_FOUND = "Користувача з таким логіном не існує";
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
     @Autowired
     public UserController(UserServiceImpl userService) {

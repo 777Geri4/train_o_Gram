@@ -16,4 +16,5 @@ public interface UserService {
     User getCurrentUser();
     UserDTO convertUserToUserDTO(User user);
     User convertUserDTOToUser(UserRegistrationDTO userDTO);
+    UserRegistrationDTO convertUserToUserRegistrationDTO(User user);
 }

@@ -4,10 +4,9 @@ import com.five.train_o_gram.dto.CommentDTO;
 import com.five.train_o_gram.dto.UserDTO;
 import com.five.train_o_gram.services.CommentService;
 import com.five.train_o_gram.services.PostService;
+import com.five.train_o_gram.services.UserService;
 import com.five.train_o_gram.services.impl.CommentServiceImpl;
 import com.five.train_o_gram.services.impl.LikeCommentServiceImpl;
-import com.five.train_o_gram.services.impl.PostServiceImpl;
-import com.five.train_o_gram.services.impl.UserServiceImpl;
 import com.five.train_o_gram.util.exceptions.comment.CommentNotFoundExeption;
 import com.five.train_o_gram.util.exceptions.ErrorResponse;
 import com.five.train_o_gram.util.exceptions.post.PostNotFoundException;
@@ -26,11 +25,11 @@ public class CommentController {
     private final CommentService commentService;
     private final PostService postService;
     private final LikeCommentServiceImpl likeCommentServiceImpl;
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
     @Autowired
     public CommentController(CommentServiceImpl commentService, PostService postService,
-                             LikeCommentServiceImpl likeCommentServiceImpl, UserServiceImpl userService) {
+                             LikeCommentServiceImpl likeCommentServiceImpl, UserService userService) {
         this.commentService = commentService;
         this.postService = postService;
         this.likeCommentServiceImpl = likeCommentServiceImpl;

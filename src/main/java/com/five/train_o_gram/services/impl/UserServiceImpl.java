@@ -5,6 +5,7 @@ import com.five.train_o_gram.dto.UserRegistrationDTO;
 import com.five.train_o_gram.models.User;
 import com.five.train_o_gram.repositories.UserRepository;
 import com.five.train_o_gram.services.ImageService;
+import com.five.train_o_gram.services.UserService;
 import com.five.train_o_gram.util.exceptions.user.UserNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
-public class UserServiceImpl implements com.five.train_o_gram.services.UserService {
+public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ImageService imageService;

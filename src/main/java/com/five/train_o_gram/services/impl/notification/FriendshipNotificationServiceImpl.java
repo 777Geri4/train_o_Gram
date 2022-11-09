@@ -10,6 +10,7 @@ import com.five.train_o_gram.util.NotificationType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,13 +39,12 @@ public class FriendshipNotificationServiceImpl implements NotificationService {
         List<NotificationFriendship> notificationFriendshipList = notificationFriendshipRepository
                 .findAllByRecipientAndNotificationTypeAndNotificationStatus(recipient, notificationType, NotificationStatus.ACTIVE);
 
-        if (notificationFriendshipList == null) {
+        if (notificationFriendshipList.isEmpty()) {
             return Collections.emptyList();
         }
 
         notificationFriendshipList.forEach(e -> e.setNotificationStatus(NotificationStatus.SEEN));
         notificationFriendshipRepository.saveAll(notificationFriendshipList);
-
-        return List.of((Notification) notificationFriendshipList);
+        return new ArrayList<>(notificationFriendshipList);
     }
 }
