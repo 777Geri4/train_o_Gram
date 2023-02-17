@@ -45,9 +45,14 @@ public class CommentNotificationServiceImpl implements NotificationService {
             return Collections.emptyList();
         }
 
-        notificationCommentList.forEach(e -> e.setNotificationStatus(NotificationStatus.SEEN));
-        notificationCommentRepository.saveAll(notificationCommentList);
+        makeNotificationsSeen(notificationCommentList);
 
         return new ArrayList<>(notificationCommentList);
     }
+
+    private void makeNotificationsSeen (List<NotificationComment> notificationCommentList){
+        notificationCommentList.forEach(notification -> notification.setNotificationStatus(NotificationStatus.SEEN));
+        notificationCommentRepository.saveAll(notificationCommentList);
+    }
+
 }

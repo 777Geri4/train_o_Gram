@@ -2,9 +2,9 @@ package com.five.train_o_gram.controllers;
 
 import com.five.train_o_gram.dto.AuthenticationDTO;
 import com.five.train_o_gram.dto.UserRegistrationDTO;
+import com.five.train_o_gram.models.User;
 import com.five.train_o_gram.security.jwt.JwtTokenProvider;
 import com.five.train_o_gram.services.UserService;
-import com.five.train_o_gram.services.impl.UserServiceImpl;
 import com.five.train_o_gram.util.exceptions.ErrorResponse;
 import com.five.train_o_gram.util.exceptions.user.UserNotCreatedException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +34,8 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public String loginPage() {
-        return "Please login";
+    public AuthenticationDTO loginPage() {
+        return new AuthenticationDTO();
     }
 
     @PostMapping("/login")
@@ -63,8 +63,8 @@ public class AuthController {
         if (userService.findByLogin(newUserLogin) != null)
             throw new UserNotCreatedException("User with login " + newUserLogin + " is already exist");
 
-        userService.registrationUser(userRegistrationDTO);
-        String token = jwtTokenProvider.createToken(userRegistrationDTO.getLogin());
+        User registeredUser = userService.registrationUser(userRegistrationDTO);
+        String token = jwtTokenProvider.createToken(registeredUser.getLogin());
         return ResponseEntity.ok(Map.of("username", userRegistrationDTO.getLogin(), "token", token));
     }
 

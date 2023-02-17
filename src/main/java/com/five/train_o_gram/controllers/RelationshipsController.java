@@ -26,14 +26,16 @@ public class RelationshipsController {
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> getUserPublishers(){
-        return ResponseEntity.ok(relationshipsService.getRelationshipBySubscribeStatus(SubscribeStatus.SUBSCRIBER).stream()
+        return ResponseEntity.ok(relationshipsService.getRelationshipBySubscribeStatus(userService.getCurrentUser(),
+                        SubscribeStatus.SUBSCRIBER).stream()
                 .map(Relationship::getPublisher)
                 .map(userService::convertUserToUserDTO).toList());
     }
 
     @GetMapping("/subscribers")
     public ResponseEntity<List<UserDTO>> getUserSubscribers(){
-        return ResponseEntity.ok(relationshipsService.getRelationshipBySubscribeStatus(SubscribeStatus.PUBLISHER).stream()
+        return ResponseEntity.ok(relationshipsService.getRelationshipBySubscribeStatus(userService.getCurrentUser(),
+                        SubscribeStatus.PUBLISHER).stream()
                 .map(Relationship::getPublisher)
                 .map(userService::convertUserToUserDTO).toList());
     }

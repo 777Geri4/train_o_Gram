@@ -74,9 +74,11 @@ public class PostServiceImpl implements PostService {
     }
 
     public List<Post> findSuggestions(User user){
-        return findAllUserPost(user).stream().flatMap(post -> post.getComments().stream())
+        return findAllUserPost(user).stream()
+                .flatMap(post -> post.getComments().stream())
                 .map(Comment::getOwner).filter(userID -> userID.getId() != user.getId())
-                .flatMap(author -> findAllUserPost(author).stream().limit(5)).toList();
+                .flatMap(author -> findAllUserPost(author).stream().limit(5))
+                .toList();
     }
 
     private List<ImageDTO> convertListOfPicturesToListOfPicturesDTO(List<Picture> pictures){

@@ -1,7 +1,9 @@
 package com.five.train_o_gram.controllers;
 
+import com.five.train_o_gram.dto.UserCommentNotificationDTO;
 import com.five.train_o_gram.dto.UserDTO;
-import com.five.train_o_gram.dto.UserFollowersDTO;
+import com.five.train_o_gram.dto.UserFollowersNotificationDTO;
+import com.five.train_o_gram.dto.UserPostNotificationDTO;
 import com.five.train_o_gram.models.notifications.Notification;
 import com.five.train_o_gram.services.NotificationFactoryService;
 import com.five.train_o_gram.services.UserService;
@@ -25,24 +27,51 @@ public class NotificationController {
     }
 
     @GetMapping("/subscribers")
-    public ResponseEntity<UserFollowersDTO> findNotificationFriendship(){
+    public ResponseEntity<UserFollowersNotificationDTO> findNotificationFriendship(){
         List<Notification> usersFriendshipNotificationList = notificationFactoryService
                 .getFriendshipNotificationService()
                 .findNotificationActivity(userService.getCurrentUser(), NotificationType.SUBSCRIBE);
 
         return ResponseEntity.ok(convertFromListOfFriendshipToUserFollowersDTO(usersFriendshipNotificationList));
     }
-    @GetMapping("/comments")
-    public ResponseEntity<?> findNotificationComment(){
 
-        return ResponseEntity.ok("Ok");
+    @GetMapping("/comments")
+    public ResponseEntity<UserCommentNotificationDTO> findNotificationComment(){
+        List<Notification> usersCommentNotificationList = notificationFactoryService
+                .getCommentNotificationService()
+                .findNotificationActivity(userService.getCurrentUser(), NotificationType.LIKE_COMMENT);
+        return ResponseEntity.ok(convertFromListOfLikesCommentsToLikesCommentDTO(usersCommentNotificationList));
     }
 
-    private UserFollowersDTO convertFromListOfFriendshipToUserFollowersDTO(List<Notification> usersFriendshipNotificationList){
+    @GetMapping("/posts")
+    public ResponseEntity<UserPostNotificationDTO> findNotificationPost(){
+        List<Notification> usersPostNotificationList = notificationFactoryService
+                .getPostNotificationService()
+                .findNotificationActivity(userService.getCurrentUser(), NotificationType.CREATE_POST);
+        return ResponseEntity.ok(convertFromListOfPostNotificationToDTO(usersPostNotificationList));
+    }
+
+    private UserPostNotificationDTO convertFromListOfPostNotificationToDTO(List<Notification> usersPostNotificationList) {
+        List<UserDTO> users = usersPostNotificationList.stream()
+                .map(Notification::getCreator)
+                .map(userService::convertUserToUserDTO)
+                .toList();
+        return new UserPostNotificationDTO(users.size(), users);
+    }
+
+    private UserFollowersNotificationDTO convertFromListOfFriendshipToUserFollowersDTO(List<Notification> usersFriendshipNotificationList){
         List<UserDTO> users = usersFriendshipNotificationList.stream()
                 .map(Notification::getCreator)
                 .map(userService::convertUserToUserDTO)
                 .toList();
-        return new UserFollowersDTO(users.size(), users);
+        return new UserFollowersNotificationDTO(users.size(), users);
+    }
+
+    private UserCommentNotificationDTO convertFromListOfLikesCommentsToLikesCommentDTO(List<Notification> likesCommentsNotificationList){
+        List<UserDTO> users = likesCommentsNotificationList.stream()
+                .map(Notification::getCreator)
+                .map(userService::convertUserToUserDTO)
+                .toList();
+        return new UserCommentNotificationDTO(users.size(), users);
     }
 }

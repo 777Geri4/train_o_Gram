@@ -24,12 +24,15 @@ public class FriendshipNotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void createNotification(User recipient, User creator, NotificationType notificationType, Object entityForNotification) {
+    public void createNotification(User recipient, User creator, NotificationType notificationType,
+                                   Object entityForNotification) {
         NotificationFriendship notificationFriendship = notificationFriendshipRepository
-                .findByRecipientAndCreatorAndNotificationTypeAndNotificationStatus(recipient, creator, notificationType, NotificationStatus.ACTIVE);
+                .findByRecipientAndCreatorAndNotificationTypeAndNotificationStatus(recipient, creator, notificationType,
+                        NotificationStatus.ACTIVE);
 
         if (notificationFriendship == null) {
-            notificationFriendship = new NotificationFriendship(recipient, creator, notificationType, NotificationStatus.ACTIVE);
+            notificationFriendship = new NotificationFriendship(recipient, creator, notificationType,
+                    NotificationStatus.ACTIVE);
             notificationFriendshipRepository.save(notificationFriendship);
         }
     }
@@ -37,13 +40,14 @@ public class FriendshipNotificationServiceImpl implements NotificationService {
     @Override
     public List<Notification> findNotificationActivity(User recipient, NotificationType notificationType) {
         List<NotificationFriendship> notificationFriendshipList = notificationFriendshipRepository
-                .findAllByRecipientAndNotificationTypeAndNotificationStatus(recipient, notificationType, NotificationStatus.ACTIVE);
+                .findAllByRecipientAndNotificationTypeAndNotificationStatus(recipient, notificationType,
+                        NotificationStatus.ACTIVE);
 
         if (notificationFriendshipList.isEmpty()) {
             return Collections.emptyList();
         }
 
-        notificationFriendshipList.forEach(e -> e.setNotificationStatus(NotificationStatus.SEEN));
+        notificationFriendshipList.forEach(notification -> notification.setNotificationStatus(NotificationStatus.SEEN));
         notificationFriendshipRepository.saveAll(notificationFriendshipList);
         return new ArrayList<>(notificationFriendshipList);
     }

@@ -11,7 +11,7 @@ public interface UserService {
     User findOne(int id);
     User findByLogin(String username);
     User update(int id, UserRegistrationDTO userDTO);
-    void registrationUser(UserRegistrationDTO userDTO);
+    User registrationUser(UserRegistrationDTO userDTO);
     void deleteUser(int id);
     User getCurrentUser();
     UserDTO convertUserToUserDTO(User user);

@@ -7,8 +7,10 @@ import com.five.train_o_gram.models.notifications.Notification;
 import com.five.train_o_gram.models.notifications.NotificationPost;
 import com.five.train_o_gram.repositories.NotificationPostRepository;
 import com.five.train_o_gram.services.NotificationService;
+import com.five.train_o_gram.services.RelationshipsService;
 import com.five.train_o_gram.util.NotificationStatus;
 import com.five.train_o_gram.util.NotificationType;
+import com.five.train_o_gram.util.SubscribeStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +21,13 @@ import java.util.List;
 @Service
 public class PostNotificationServiceImpl implements NotificationService {
     private final NotificationPostRepository notificationPostRepository;
+    private final RelationshipsService relationshipsService;
 
     @Autowired
-    public PostNotificationServiceImpl(NotificationPostRepository notificationPostRepository) {
+    public PostNotificationServiceImpl(NotificationPostRepository notificationPostRepository,
+                                       RelationshipsService relationshipsService) {
         this.notificationPostRepository = notificationPostRepository;
+        this.relationshipsService = relationshipsService;
     }
 
     @Override
@@ -57,7 +62,9 @@ public class PostNotificationServiceImpl implements NotificationService {
 
     private void createNotificationPostActivityForUserSubscribers(Post post){
         User postOwner = post.getOwner();
-        List<User> subscribers = postOwner.getSubscribers().stream().map(Relationship::getSubscriber).toList();
+        List<User> subscribers = relationshipsService
+                .getRelationshipBySubscribeStatus(postOwner, SubscribeStatus.PUBLISHER)
+                .stream().map(Relationship::getPublisher).toList();
         List<NotificationPost> eventPosts = new ArrayList<>();
         subscribers.forEach(subscriber -> eventPosts
                 .add(new NotificationPost(subscriber, postOwner, post, NotificationType.CREATE_POST, NotificationStatus.ACTIVE)));

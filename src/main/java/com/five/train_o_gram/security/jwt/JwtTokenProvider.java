@@ -25,7 +25,6 @@ public class JwtTokenProvider {
 
     @Value("${jwt.token.issuer}")
     private String issuer;
-
     private final UserDetailsService userDetailsService;
 
     @Autowired

@@ -5,8 +5,6 @@ import com.five.train_o_gram.dto.UserDTO;
 import com.five.train_o_gram.services.PostService;
 import com.five.train_o_gram.services.UserService;
 import com.five.train_o_gram.services.impl.LikePostServiceImpl;
-import com.five.train_o_gram.services.impl.PostServiceImpl;
-import com.five.train_o_gram.services.impl.UserServiceImpl;
 import com.five.train_o_gram.util.exceptions.ErrorResponse;
 import com.five.train_o_gram.util.exceptions.post.PostNotCreatedException;
 import com.five.train_o_gram.util.exceptions.post.PostNotFoundException;
@@ -29,7 +27,7 @@ public class PostController {
     private final LikePostServiceImpl likePostServiceImpl;
 
     @Autowired
-    public PostController(PostService postService, UserServiceImpl userService, LikePostServiceImpl likePostServiceImpl) {
+    public PostController(PostService postService, UserService userService, LikePostServiceImpl likePostServiceImpl) {
         this.postService = postService;
         this.userService = userService;
         this.likePostServiceImpl = likePostServiceImpl;

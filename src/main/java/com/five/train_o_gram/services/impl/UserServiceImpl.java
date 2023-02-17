@@ -27,7 +27,8 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, ImageService imageService, ModelMapper modelMapper) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder,
+                           ImageService imageService, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.imageService = imageService;
@@ -57,10 +58,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public void registrationUser(UserRegistrationDTO userDTO){
+    public User registrationUser(UserRegistrationDTO userDTO){
         User user = convertUserDTOToUser(userDTO);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     @Transactional
@@ -84,8 +85,6 @@ public class UserServiceImpl implements UserService {
 
     public User getCurrentUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userRepository.findByLogin(authentication.getName());
-        if (user == null) throw new UserNotFoundException();
-        return user;
+        return userRepository.findByLogin(authentication.getName());
     }
 }

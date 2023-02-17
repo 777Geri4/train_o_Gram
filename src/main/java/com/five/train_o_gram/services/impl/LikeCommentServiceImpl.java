@@ -53,6 +53,10 @@ public class LikeCommentServiceImpl implements LikeService {
         Comment comment = commentService.findComment(commentId);
         int likesQuantity = comment.getLikes();
         comment.setLikes(--likesQuantity);
+        notificationFactoryService
+                .getCommentNotificationService()
+                .findNotificationActivity(comment.getOwner(), NotificationType.LIKE_COMMENT);
+        
         likeCommentRepository.delete(new LikeComment(userService.getCurrentUser(), commentService.updateComment(comment)));
     }
 }

@@ -50,6 +50,7 @@ public class CommentController {
     @PostMapping("post/{id}")
     public ResponseEntity<HttpStatus> createComment(@PathVariable("id") int id, String comment){
         commentService.create(postService.findPostByID(id), comment);
+
         return ResponseEntity.ok(HttpStatus.OK);
     }
 

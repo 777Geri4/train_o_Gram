@@ -56,8 +56,7 @@ public class RelationshipsServiceImpl implements RelationshipsService {
         relationshipsRepository.save(relationship);
     }
     @Override
-    public List<Relationship> getRelationshipBySubscribeStatus(SubscribeStatus subscribeStatus){
-        return relationshipsRepository.findBySubscriberAndSubscribeStatus(userService.getCurrentUser(),
-                subscribeStatus);
+    public List<Relationship> getRelationshipBySubscribeStatus(User user, SubscribeStatus subscribeStatus){
+        return relationshipsRepository.findBySubscriberAndSubscribeStatus(user,subscribeStatus);
     }
 }

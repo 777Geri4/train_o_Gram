@@ -2,14 +2,14 @@ package com.five.train_o_gram.dto;
 
 import java.util.List;
 
-public class UserFollowersDTO {
+public class UserFollowersNotificationDTO {
     private int followersQuantity;
     private List<UserDTO> followers;
 
-    public UserFollowersDTO() {
+    public UserFollowersNotificationDTO() {
     }
 
-    public UserFollowersDTO(int followersQuantity, List<UserDTO> followers) {
+    public UserFollowersNotificationDTO(int followersQuantity, List<UserDTO> followers) {
         this.followersQuantity = followersQuantity;
         this.followers = followers;
     }

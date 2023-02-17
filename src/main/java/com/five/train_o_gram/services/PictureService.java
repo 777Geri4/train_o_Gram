@@ -4,7 +4,6 @@ import com.five.train_o_gram.models.Picture;
 import com.five.train_o_gram.models.Post;
 import com.five.train_o_gram.models.User;
 import com.five.train_o_gram.repositories.PictureRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

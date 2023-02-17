@@ -4,7 +4,6 @@ import com.five.train_o_gram.dto.ImageDTO;
 import com.five.train_o_gram.services.AvatarService;
 import com.five.train_o_gram.services.ImageService;
 import com.five.train_o_gram.services.UserService;
-import com.five.train_o_gram.services.impl.UserServiceImpl;
 import com.five.train_o_gram.util.exceptions.ErrorResponse;
 import com.five.train_o_gram.util.exceptions.avatar.AvatarNotCreatedException;
 import com.five.train_o_gram.util.exceptions.avatar.AvatarNotDeletedException;
